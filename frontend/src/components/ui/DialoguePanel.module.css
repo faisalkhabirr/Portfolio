@@ -1,0 +1,52 @@
+.panel {
+  position: fixed;
+  left: clamp(20px, 4vw, 48px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(420px, 34vw);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  pointer-events: auto;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.heading {
+  font-size: clamp(24px, 2.8vw, 36px);
+  line-height: 1.25;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin: 0;
+  /* Reserve room for the future typewriter cursor without layout shift
+     once Phase 4 wires it up. */
+  min-height: 2.5em;
+}
+
+.sub {
+  font-size: clamp(14px, 1.15vw, 16px);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 36ch;
+}
+
+/* Reserved for the CTA pill group (Phase 4 / ActionButtons in the
+   approved architecture). Left empty on purpose — no interactive
+   elements are built here yet. */
+.actionsSlot {
+  min-height: 1px;
+}
+
+@media (max-width: 860px) {
+  .panel {
+    width: min(420px, 60vw);
+  }
+}

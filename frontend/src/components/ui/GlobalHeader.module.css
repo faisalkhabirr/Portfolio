@@ -1,0 +1,53 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(16px, 3vw, 32px) clamp(20px, 4vw, 48px);
+}
+
+.logo {
+  font-size: clamp(15px, 1.4vw, 18px);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  pointer-events: auto;
+}
+
+.logoDot {
+  color: var(--color-text-secondary);
+}
+
+.sparkle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-primary);
+  opacity: 0.85;
+}
+
+.ctaLink {
+  font-size: clamp(13px, 1.2vw, 15px);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-surface);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: auto;
+  /* Plain CSS transition, no JS/GSAP — this is composition-level polish,
+     not the elaborate GSAP-driven hover/expression morphing planned for
+     a later interaction phase. */
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.ctaLink:hover {
+  background: var(--color-white);
+  border-color: var(--color-text-primary);
+}

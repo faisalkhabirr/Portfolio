@@ -1,0 +1,56 @@
+/* Locked-viewport reset. This is an app-shell composition, not a scrolling
+   page: html/body/#root must never introduce scroll or unexpected margins. */
+
+/* CSS custom properties mirroring src/styles/tokens.ts.
+   These MUST be kept in sync manually — plain CSS can't import a .ts file.
+   tokens.ts stays the source of truth for anything touched from R3F/JS
+   (e.g. the canvas background color); these variables are what the DOM UI
+   layer's CSS Modules reference. If you change a color, update both. */
+:root {
+  --color-bg: #DDE2E8;
+  --color-bg-dark: #AEB7C2;
+  --color-text-primary: #101317;
+  --color-text-secondary: #4E5965;
+  --glass-surface: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(16, 19, 23, 0.14);
+  --color-cyan: #5EE7FF;
+  --color-purple: #8B7CFF;
+  --color-yellow: #FFD52F;
+  --color-glitch-red: #FF4F6D;
+  --color-white: #F8FAFC;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-bg);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.app-layout {
+  position: fixed;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* The one DOM layer that sits above the R3F canvas. It ignores pointer
+   events itself so it never blocks Phase 3's canvas-level pointer
+   tracking; each interactive child (links, buttons) opts back in via
+   pointer-events: auto in its own CSS module. */
+.ui-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
