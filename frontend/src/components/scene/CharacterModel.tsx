@@ -98,7 +98,7 @@ export default function CharacterModel() {
     persp.updateProjectionMatrix();
   }, [camera, size]);
 
-  return <primitive ref={groupRef} object={gltf.scene} rotation={[0, -Math.PI / 2, 0]} />;
+  return <primitive ref={groupRef} object={gltf.scene} rotation={[0, 0, 0]} />;
 }
 
 // Preload so the request kicks off as early as possible rather than
