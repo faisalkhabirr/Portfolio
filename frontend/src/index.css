@@ -7,7 +7,7 @@
    (e.g. the canvas background color); these variables are what the DOM UI
    layer's CSS Modules reference. If you change a color, update both. */
 :root {
-  --color-bg: #DDE2E8;
+  --color-bg: #E7EBF0;
   --color-bg-dark: #AEB7C2;
   --color-text-primary: #101317;
   --color-text-secondary: #4E5965;

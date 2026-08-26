@@ -6,15 +6,15 @@ import CharacterController from './CharacterController';
 import FPSMeter from '../../three/inspectors/FPSMeter';
 import { tokens } from '../../styles/tokens';
 
-// Phase 3 scope: static camera, sensible lighting, the model loaded and
-// framed, an in-canvas perf sampler, and now damped mouse-parallax
-// rotation via CharacterController. No choreography, no post-processing —
-// those are later phases.
+// CharacterController -> character/Character. Scene shell is unchanged.
 export default function SceneCanvas() {
   return (
     <Canvas
       dpr={[1, 2]}
-      gl={{ antialias: true }}
+      // Modest exposure bump alongside the Lighting.tsx retune — helps
+      // with the reported underexposed look without needing real
+      // post-processing (still none in use here).
+      gl={{ antialias: true, toneMappingExposure: 1.15 }}
       style={{ position: 'absolute', inset: 0 }}
     >
       <color attach="background" args={[tokens.background]} />

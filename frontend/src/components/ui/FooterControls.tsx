@@ -7,16 +7,7 @@ import styles from './FooterControls.module.css';
 export default function FooterControls() {
   return (
     <div className={styles.footer}>
-      <button
-        type="button"
-        className={styles.controlButton}
-        aria-label="Toggle audio"
-        aria-pressed="false"
-        // No onClick yet — intentionally inert. Wiring this to real
-        // audio state is a later phase, not a Phase 2 concern.
-      >
-        <AudioIcon />
-      </button>
+      
     </div>
   );
 }
