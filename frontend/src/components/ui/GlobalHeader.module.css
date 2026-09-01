@@ -1,53 +1,239 @@
 .header {
   position: fixed;
+
   top: 0;
   left: 0;
   right: 0;
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
-  padding: clamp(16px, 3vw, 32px) clamp(20px, 4vw, 48px);
+
+  padding:
+    clamp(16px, 3vw, 32px)
+    clamp(20px, 4vw, 48px);
+
+  z-index: 50;
 }
+
+
+/* ========================================================================== */
+/* LOGO                                                                       */
+/* ========================================================================== */
 
 .logo {
-  font-size: clamp(15px, 1.4vw, 18px);
+  display: inline-flex;
+
+  align-items: center;
+
+  font-size:
+    clamp(
+      22px,
+      1.4vw,
+      18px
+    );
+
   font-weight: 600;
-  color: var(--color-text-primary);
+
+  color:
+    var(--color-text-primary);
+
   text-decoration: none;
-  letter-spacing: -0.01em;
+
+  letter-spacing:
+    -0.01em;
+
   pointer-events: auto;
+
+  white-space: nowrap;
 }
 
-.logoDot {
-  color: var(--color-text-secondary);
-}
+
+/* ========================================================================== */
+/* SPARKLE                                                                    */
+/* ========================================================================== */
 
 .sparkle {
   display: flex;
+
   align-items: center;
+
   justify-content: center;
-  color: var(--color-text-primary);
+
+  color:
+    var(--color-text-primary);
+
   opacity: 0.85;
 }
 
+
+/* ========================================================================== */
+/* LET'S TALK                                                                 */
+/* ========================================================================== */
+
 .ctaLink {
-  font-size: clamp(13px, 1.2vw, 15px);
-  color: var(--color-text-primary);
+  display: inline-flex;
+
+  align-items: center;
+
+  font-size:
+    clamp(
+      22px,
+      1.2vw,
+      18px
+    );
+
+  color:
+    var(--color-text-primary);
+
   text-decoration: none;
-  padding: 9px 18px;
-  border-radius: 999px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass-surface);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+
   pointer-events: auto;
-  /* Plain CSS transition, no JS/GSAP — this is composition-level polish,
-     not the elaborate GSAP-driven hover/expression morphing planned for
-     a later interaction phase. */
-  transition: background 0.2s ease, border-color 0.2s ease;
+
+  white-space: nowrap;
 }
 
-.ctaLink:hover {
-  background: var(--color-white);
-  border-color: var(--color-text-primary);
+
+/* ========================================================================== */
+/* FLIP TEXT                                                                  */
+/* ========================================================================== */
+
+.flipText {
+  display: inline-flex;
+
+  align-items: center;
+
+  perspective: 700px;
+
+  white-space: nowrap;
+}
+
+.flipLetter {
+  display: inline-block;
+
+  transform-origin:
+    center center;
+
+  transform-style: preserve-3d;
+
+  backface-visibility: hidden;
+
+  will-change:
+    transform,
+    opacity;
+}
+
+.flipSpace {
+  display: inline-block;
+
+  width: 0.28em;
+}
+
+
+/* ========================================================================== */
+/* SHARED HOVER FLIP                                                          */
+/* ========================================================================== */
+
+/*
+ * EXACT SAME EFFECT for both:
+ *
+ * khabirr.
+ * Let's talk
+ *
+ * Same duration
+ * Same easing
+ * Same per-letter delay
+ */
+
+.logo:hover .flipLetter,
+.logo:focus-visible .flipLetter,
+.ctaLink:hover .flipLetter,
+.ctaLink:focus-visible .flipLetter {
+  animation:
+    letterFlip
+    0.18s
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    )
+    both;
+
+  animation-delay:
+    calc(
+      var(--letter-index) * 38ms
+    );
+}
+
+
+/* ========================================================================== */
+/* LOGO DOT                                                                   */
+/* ========================================================================== */
+
+.logoDotLetter {
+  color:
+    var(--color-text-secondary);
+}
+
+
+/* ========================================================================== */
+/* FLIP ANIMATION                                                             */
+/* ========================================================================== */
+
+@keyframes letterFlip {
+  0% {
+    transform:
+      rotateX(0deg)
+      translateY(0);
+
+    opacity: 1;
+  }
+
+  35% {
+    transform:
+      rotateX(90deg)
+      translateY(-1px);
+
+    opacity: 0.35;
+  }
+
+  65% {
+    transform:
+      rotateX(180deg)
+      translateY(1px);
+
+    opacity: 0.35;
+  }
+
+  100% {
+    transform:
+      rotateX(360deg)
+      translateY(0);
+
+    opacity: 1;
+  }
+}
+
+
+/* ========================================================================== */
+/* ACCESSIBILITY                                                              */
+/* ========================================================================== */
+
+.logo:focus-visible,
+.ctaLink:focus-visible {
+  outline:
+    2px solid
+    rgba(
+      17,
+      19,
+      24,
+      0.35
+    );
+
+  outline-offset: 4px;
+
+  border-radius: 4px;
 }

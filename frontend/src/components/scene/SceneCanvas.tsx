@@ -1,26 +1,91 @@
 import { Canvas } from '@react-three/fiber';
-import { Suspense } from 'react';
+import { GradientBackground } from './GradientBackground';
+import {
+  Suspense,
+  useEffect,
+} from 'react';
+import { useProgress } from '@react-three/drei';
+
 import CameraRig from './CameraRig';
 import Lighting from './Lighting';
 import CharacterController from './CharacterController';
-import FPSMeter from '../../three/inspectors/FPSMeter';
-import { tokens } from '../../styles/tokens';
 
-// CharacterController -> character/Character. Scene shell is unchanged.
+import FPSMeter from '../../three/inspectors/FPSMeter';
+
+import { useAppStore } from '../../state/useAppStore';
+
+function LoadingProgressBridge() {
+  const {
+    progress,
+    active,
+  } = useProgress();
+
+  const setLoadProgress =
+    useAppStore(
+      (state) => state.setLoadProgress,
+    );
+
+  const setAssetsReady =
+    useAppStore(
+      (state) => state.setAssetsReady,
+    );
+
+  useEffect(() => {
+    const normalized =
+      Math.min(
+        1,
+        Math.max(
+          0,
+          progress / 100,
+        ),
+      );
+
+    setLoadProgress(
+      normalized,
+    );
+
+    /*
+     * Drei reports 100 when the loading manager has completed.
+     */
+    if (
+      !active &&
+      progress >= 100
+    ) {
+      setAssetsReady(true);
+    }
+  }, [
+    progress,
+    active,
+    setLoadProgress,
+    setAssetsReady,
+  ]);
+
+  return null;
+}
+
 export default function SceneCanvas() {
   return (
     <Canvas
       dpr={[1, 2]}
-      // Modest exposure bump alongside the Lighting.tsx retune — helps
-      // with the reported underexposed look without needing real
-      // post-processing (still none in use here).
-      gl={{ antialias: true, toneMappingExposure: 1.15 }}
-      style={{ position: 'absolute', inset: 0 }}
+      gl={{
+        antialias: true,
+        toneMappingExposure: 1.15,
+      }}
+      style={{
+        position: 'absolute',
+        inset: 0,
+      }}
     >
-      <color attach="background" args={[tokens.background]} />
+      <GradientBackground />
+
       <CameraRig />
+
       <Lighting />
+
+      <LoadingProgressBridge />
+
       <FPSMeter />
+
       <Suspense fallback={null}>
         <CharacterController />
       </Suspense>

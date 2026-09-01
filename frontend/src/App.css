@@ -99,3 +99,64 @@
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
+
+
+.video-background-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -10;
+  pointer-events: none;
+}
+
+.video-background-container video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+}
+
+.infinite-gradient-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    #f5f7fa,
+    #e4e8f0,
+    #dbeafe,
+    #f3e8ff
+  );
+  background-size: 400% 400%;
+  animation: infiniteGradient 18s ease infinite;
+}
+
+@keyframes infiniteGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+body {
+  background-color: #0b0f19;
+  color: #f3f4f6;
+  font-family: inherit;
+  margin: 0;
+  overflow-x: hidden;
+}

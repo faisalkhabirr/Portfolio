@@ -1,31 +1,96 @@
+import type { CSSProperties } from 'react';
+
 import styles from './GlobalHeader.module.css';
 
-// Phase 2: static visual chrome only. The sparkle icon renders static —
-// its idle pulse and the eye-expression-on-hover behavior described in
-// the reference are later-phase interaction logic, not composition.
-export default function GlobalHeader() {
+type FlipTextProps = {
+  text: string;
+  className?: string;
+  dotClassName?: string;
+};
+
+function FlipText({
+  text,
+  className = '',
+  dotClassName = '',
+}: FlipTextProps) {
   return (
-    <header className={styles.header}>
-      {/* Placeholder wordmark — swap for your actual brand mark/logo asset */}
-      <a href="#" className={styles.logo} aria-label="Home">
-        khabirr<span className={styles.logoDot}>.</span>
-      </a>
+    <span
+      className={`${styles.flipText} ${className}`}
+    >
+      {Array.from(text).map(
+        (character, index) => {
+          if (character === ' ') {
+            return (
+              <span
+                key={`space-${index}`}
+                className={styles.flipSpace}
+                aria-hidden="true"
+              >
+                {'\u00A0'}
+              </span>
+            );
+          }
 
-      <div className={styles.sparkle} aria-hidden="true">
-        {/* <SparkleIcon /> */}
-      </div>
+          const isDot =
+            character === '.';
 
-      <a href="#contact" className={styles.ctaLink}>
-        Let&rsquo;s talk
-      </a>
-    </header>
+          return (
+            <span
+              key={`${character}-${index}`}
+              className={`${styles.flipLetter} ${
+                isDot
+                  ? dotClassName
+                  : ''
+              }`}
+              style={
+                {
+                  '--letter-index': index,
+                } as CSSProperties
+              }
+              aria-hidden="true"
+            >
+              {character}
+            </span>
+          );
+        },
+      )}
+    </span>
   );
 }
 
-function SparkleIcon() {
+export default function GlobalHeader() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2 L14.2 9.8 L22 12 L14.2 14.2 L12 22 L9.8 14.2 L2 12 L9.8 9.8 Z" fill="currentColor" />
-    </svg>
+    <header
+      className={styles.header}
+      data-intro="header"
+    >
+      <a
+        href="#"
+        className={styles.logo}
+        aria-label="khabirr."
+      >
+        <FlipText
+          text="khabirr."
+          dotClassName={
+            styles.logoDotLetter
+          }
+        />
+      </a>
+
+      <div
+        className={styles.sparkle}
+        aria-hidden="true"
+      >
+        {/* Sparkle can be added later */}
+      </div>
+
+      <a
+        href="#contact"
+        className={styles.ctaLink}
+        aria-label="Let's talk"
+      >
+        <FlipText text="Let's talk" />
+      </a>
+    </header>
   );
 }
