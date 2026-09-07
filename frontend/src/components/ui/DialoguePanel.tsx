@@ -25,8 +25,8 @@ const TYPEWRITER_CONFIG = {
     punctuationMultiplier: 3.15,
   },
   mobile: {
-    characterDelay: 3.5,
-    punctuationMultiplier: 1.6,
+    characterDelay: 25,
+    punctuationMultiplier: 3.6,
   },
 } as const;
 

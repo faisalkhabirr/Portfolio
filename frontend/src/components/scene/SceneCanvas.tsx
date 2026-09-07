@@ -74,6 +74,7 @@ export default function SceneCanvas() {
       style={{
         position: 'absolute',
         inset: 0,
+        zIndex: 0,
       }}
     >
       <GradientBackground />

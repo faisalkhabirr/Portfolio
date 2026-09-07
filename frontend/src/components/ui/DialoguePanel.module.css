@@ -92,7 +92,20 @@
   will-change: opacity, transform;
 }
 
-.actionsVisible {
+/*
+ * CHANGED: was `.actionsVisible { pointer-events: auto; }`.
+ *
+ * Plain `.actionsVisible` tied in specificity with `.actions` above.
+ * When two same-specificity rules conflict, whichever the bundler
+ * happens to output LAST wins — and after HMR churn during this dev
+ * session, `.actions { pointer-events: none; }` was winning, silently
+ * keeping the CTA row untappable even after the class was applied.
+ *
+ * Chaining both classes together gives this rule strictly higher
+ * specificity, so it deterministically wins regardless of source
+ * order or bundler output order.
+ */
+.actions.actionsVisible {
   pointer-events: auto;
 }
 
@@ -286,17 +299,6 @@
 
     width: 100%;
 
-    /*
-     * IMPORTANT:
-     *
-     * The intro sequence controls this CSS variable.
-     *
-     * Opening:
-     *   30dvh
-     *
-     * Final:
-     *   50.8dvh
-     */
     height:
       var(
         --mobile-sheet-height,
@@ -338,7 +340,8 @@
       0
       0;
 
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 
     z-index: 40;
 
@@ -353,9 +356,6 @@
         0.06
       );
 
-    /*
-     * We want the height to be controlled by GSAP.
-     */
     will-change:
       height;
   }

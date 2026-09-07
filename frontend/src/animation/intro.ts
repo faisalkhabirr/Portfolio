@@ -63,7 +63,7 @@ const MOBILE_CONFIG = {
     duration: 0.4,
   },
   loader: {
-    duration: 0.5,
+    duration: 0.9,
   },
   reveal: {
     backgroundDuration: 0.5,
@@ -75,19 +75,19 @@ const MOBILE_CONFIG = {
   mobileCinematic: {
     initialSheetHeight: 30,
     finalSheetHeight: 50.8,
-    duration: 0.75,
+    duration: 0.95,
     startDelay: 80,
     ease: 'power3.inOut',
   },
 
   dialogueTransition: {
-    firstMessageHold: 1550, // matches desktop exactly, per direction
+    firstMessageHold: 580, // matches desktop exactly, per direction
     previousMoveY: -12,
     previousDuration: 0.7,
-    glitchTotalDuration: 0.65,
+    glitchTotalDuration: 0.95,
     secondMessageStartDelay: 35,
-    secondMessageRevealDuration: 0.35,
-    secondMessageHold: 850,
+    secondMessageRevealDuration: 0.95,
+    secondMessageHold: 350,
     ctaParentDuration: 0.2,
     ctaItemDuration: 0.32,
     ctaStagger: 0.05,
