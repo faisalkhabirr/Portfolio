@@ -48,6 +48,14 @@
   pointer-events: auto;
 
   white-space: nowrap;
+
+  /* Support both <a> and <button> */
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 
@@ -237,3 +245,104 @@
 
   border-radius: 4px;
 }
+
+
+/* ========================================================================== */
+/* THEME TOGGLE                                                                */
+/* ========================================================================== */
+
+.themeToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: 1px solid var(--border-color, rgba(16, 19, 23, 0.14));
+  border-radius: 50%;
+
+  width: 34px;
+  height: 34px;
+
+  font-size: 16px;
+  line-height: 1;
+
+  color: var(--text-color, var(--color-text-primary));
+
+  cursor: pointer;
+  pointer-events: auto;
+
+  /* Smooth color transitions to match html transition */
+  transition:
+    color            0.4s ease,
+    border-color     0.4s ease,
+    background-color 0.25s ease,
+    transform        0.15s ease;
+
+  /* Keep it from being hit by the intro opacity animation */
+  z-index: 51;
+}
+
+.themeToggle:hover {
+  background-color: var(--border-color, rgba(16, 19, 23, 0.08));
+  transform: rotate(30deg);
+}
+
+.themeToggle:focus-visible {
+  outline: 2px solid var(--text-color, var(--color-text-primary));
+  outline-offset: 3px;
+}
+
+
+/* ========================================================================== */
+/* ARCHIVE / PROJECTS TOGGLE                                                  */
+/* ========================================================================== */
+
+.archiveButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: 1px solid var(--border-color, rgba(16, 19, 23, 0.14));
+  border-radius: 2px;
+  padding: 6px 14px;
+
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  color: var(--text-color, var(--color-text-primary));
+  cursor: pointer;
+  pointer-events: auto;
+
+  transition:
+    color            0.4s ease,
+    border-color     0.4s ease,
+    background-color 0.25s ease,
+    letter-spacing   0.25s ease;
+
+  z-index: 51;
+}
+
+.archiveButton:hover {
+  background-color: var(--border-color, rgba(16, 19, 23, 0.06));
+  letter-spacing: 0.18em;
+}
+
+.archiveButtonActive {
+  border-color: var(--text-muted, #8A9399);
+  color: var(--text-muted, #8A9399);
+}
+
+.archiveButtonActive:hover {
+  border-color: var(--text-color, var(--color-text-primary));
+  color: var(--text-color, var(--color-text-primary));
+}
+
+.archiveButton:focus-visible {
+  outline: 2px solid var(--text-color, var(--color-text-primary));
+  outline-offset: 3px;
+}
+

@@ -18,6 +18,32 @@
   --color-yellow: #FFD52F;
   --color-glitch-red: #FF4F6D;
   --color-white: #F8FAFC;
+
+  /* ─── Theme semantic aliases (light defaults) ─── */
+  --bg-color:     #E8EDEA;   /* sage cream */
+  --bg-surface:   #F3F6F4;   /* elevated surface */
+  --text-color:   #101317;   /* near-black */
+  --text-muted:   #4E5965;   /* secondary text */
+  --border-color: rgba(16, 19, 23, 0.14);
+  --toggle-icon:  "◑";
+}
+
+/* ─── Dark theme overrides applied via data-theme="dark" on <html> ─── */
+html[data-theme="dark"] {
+  --bg-color:     #0C0D0D;   /* deep charcoal */
+  --bg-surface:   #141516;   /* elevated surface */
+  --text-color:   #F0F2F0;   /* near-white */
+  --text-muted:   #8A9399;   /* dimmed secondary */
+  --border-color: rgba(255, 255, 255, 0.10);
+  --toggle-icon:  "○";
+}
+
+/* Smooth theme transitions on the entire document */
+html {
+  color-scheme: light dark;
+  transition:
+    background-color 0.4s ease,
+    color            0.4s ease;
 }
 
 * {

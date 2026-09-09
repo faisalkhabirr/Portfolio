@@ -1,0 +1,37 @@
+.preloaderContainer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: #050505;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  pointer-events: none; /* Let clicks pass through when fading out */
+}
+
+.counter {
+  font-size: 5vw;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  min-width: 200px;
+  text-align: center;
+}
+
+/* Optional cinematic scanline effect overlay */
+.preloaderContainer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}

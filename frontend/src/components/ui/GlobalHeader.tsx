@@ -1,6 +1,9 @@
 import type { CSSProperties } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import styles from './GlobalHeader.module.css';
+import { useAppStore } from '../../state/useAppStore';
+import { useTransitionNavigate } from '../../context/TransitionContext';
 
 type FlipTextProps = {
   text: string;
@@ -59,15 +62,27 @@ function FlipText({
 }
 
 export default function GlobalHeader() {
+  const theme = useAppStore((s) => s.theme);
+  const toggleTheme = useAppStore((s) => s.toggleTheme);
+  const navigateTo = useTransitionNavigate();
+  const location = useLocation();
+
+  const isOnWork = location.pathname.startsWith('/work');
+
+  const handleArchiveToggle = () => {
+    navigateTo(isOnWork ? '/' : '/work');
+  };
+
   return (
     <header
       className={styles.header}
       data-intro="header"
     >
-      <a
-        href="#"
+      {/* Logo — navigate home with transition */}
+      <button
         className={styles.logo}
-        aria-label="khabirr."
+        onClick={() => navigateTo('/')}
+        aria-label="khabirr. — Home"
       >
         <FlipText
           text="khabirr."
@@ -75,7 +90,7 @@ export default function GlobalHeader() {
             styles.logoDotLetter
           }
         />
-      </a>
+      </button>
 
       <div
         className={styles.sparkle}
@@ -83,6 +98,25 @@ export default function GlobalHeader() {
       >
         {/* Sparkle can be added later */}
       </div>
+
+      {/* Theme toggle */}
+      <button
+        className={styles.themeToggle}
+        onClick={toggleTheme}
+        aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      >
+        {theme === 'dark' ? '○' : '◑'}
+      </button>
+
+      {/* Archive / Home toggle */}
+      <button
+        className={`${styles.archiveButton} ${isOnWork ? styles.archiveButtonActive : ''}`}
+        onClick={handleArchiveToggle}
+        aria-label={isOnWork ? 'Close archive — return home' : 'Open projects archive'}
+      >
+        {isOnWork ? '[ + CLOSE ARCHIVE ]' : '+ PROJECTS'}
+      </button>
 
       <a
         href="#contact"
@@ -93,4 +127,4 @@ export default function GlobalHeader() {
       </a>
     </header>
   );
-}
+}
