@@ -1,0 +1,168 @@
+.navbar {
+  --nav-text: var(--text-color, #ffffff);
+  --nav-border: var(--border-color, rgba(255, 255, 255, 0.25));
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 50;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: clamp(16px, 2.5vw, 28px)
+           clamp(20px, 4vw, 40px);
+
+  font-family: "Courier New", Courier, monospace;
+
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.navbar > * {
+  pointer-events: auto;
+}
+
+
+/* LOGO */
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: var(--nav-text);
+
+  cursor: pointer;
+  font: inherit;
+}
+
+.logoText {
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.logoLines {
+  max-width: 140px;
+
+  overflow: hidden;
+
+  color: color-mix(
+    in srgb,
+    var(--nav-text) 40%,
+    transparent
+  );
+
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+
+/* NAV */
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+/* PILLS */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 28px;
+  margin: 0;
+  padding: 6px 12px;
+
+  border: 1px solid var(--nav-border);
+  border-radius: 2px;
+
+  background: transparent;
+  color: var(--nav-text);
+
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.08em;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pill:hover:not(:disabled) {
+  background: var(--nav-text);
+  border-color: var(--nav-text);
+  color: var(--bg-color, #000000);
+
+  transform: translateY(-1px);
+}
+
+.pill:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.pill:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pill:focus-visible {
+  outline: 1px solid var(--nav-text);
+  outline-offset: 3px;
+}
+
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 16px 18px;
+  }
+
+  .logoText {
+    font-size: 18px;
+  }
+
+  .logoLines {
+    font-size: 8px;
+  }
+
+  .nav {
+    gap: 6px;
+  }
+
+  .pill {
+    min-height: 26px;
+    padding: 5px 9px;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+  }
+}

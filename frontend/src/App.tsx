@@ -1,91 +1,32 @@
-import { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
-import SceneCanvas from './components/scene/SceneCanvas';
-import NodeTreeOverlay from './components/dev/NodeTreeOverlay';
-
-import GlobalHeader from './components/ui/GlobalHeader';
-import DialoguePanel from './components/ui/DialoguePanel';
-import FooterControls from './components/ui/FooterControls';
-import Preloader from './components/ui/Preloader';
-
-import { usePointerTracking } from './hooks/usePointerTracking';
-import { useTheme } from './hooks/useTheme';
-import { playIntroSequence } from './animation/intro';
-
+import HomePage from './pages/Home/HomePage';
 import WorkPage from './pages/Work/WorkPage';
 import ProjectDetail from './pages/Work/ProjectDetail';
 
-// ─── Root App — routing shell + persistent 3D ────────────────────────────────
-export default function App() {
-  usePointerTracking();
-  useTheme();
-  const location = useLocation();
-  const isHome = location.pathname === '/';
+import { useTheme } from './hooks/useTheme';
 
-  useEffect(() => {
-    // Only play intro if we start on the home route, or if we want it globally.
-    // The intro timeline manages opacity of scene/header/etc.
-    const cleanup = playIntroSequence();
-    return cleanup;
-  }, []);
+// ─── Root App — routing only ─────────────────────────────────────────────────
+//
+// Theme is global because it belongs to the entire site.
+//
+// Deliberately NOT here (they belong to Home alone, and must mount/unmount
+// with the Home route so their work stops when you navigate away):
+//   - SceneCanvas / Three.js renderer
+//   - usePointerTracking()
+//   - playIntroSequence()
+//   - GlobalHeader, DialoguePanel, FooterControls, Preloader, NodeTreeOverlay
+//
+// Hiding the 3D scene with opacity/visibility does NOT stop the R3F render
+// loop — that was the original cause of ~90% CPU on /work.
+export default function App() {
+  useTheme();
 
   return (
-    <>
-      {/* ── PERSISTENT 3D SCENE ── */}
-      {/* Visibility hidden when not on home so it doesn't block interactions or burn battery as much */}
-      <div 
-        className="app-layout"
-        style={{
-          pointerEvents: 'none'
-        }}
-      >
-        <div
-          data-intro="scene-stage"
-          style={{ 
-            position: 'absolute', 
-            inset: 0, 
-            opacity: isHome ? 1 : 0, 
-            visibility: isHome ? 'visible' : 'hidden',
-            transition: 'opacity 0.4s ease, visibility 0.4s ease',
-            transform: 'scale(1)' 
-          }}
-        >
-          <SceneCanvas />
-        </div>
-
-        {/* ── GLOBAL DOM UI ── */}
-        <div className="ui-layer">
-          <div data-intro="header" style={{ opacity: 0, pointerEvents: 'auto' }}>
-            <GlobalHeader />
-          </div>
-
-          <div style={{
-            opacity: isHome ? 1 : 0, 
-            visibility: isHome ? 'visible' : 'hidden',
-            transition: 'opacity 0.4s ease, visibility 0.4s ease',
-            pointerEvents: isHome ? 'auto' : 'none'
-          }}>
-            <DialoguePanel />
-            <div data-intro="footer-controls" style={{ opacity: 0 }}>
-              <FooterControls />
-            </div>
-          </div>
-        </div>
-
-        <Preloader />
-        <NodeTreeOverlay />
-      </div>
-
-      {/* ── ROUTES LAYER (Overlays on top of Home) ── */}
-      <div style={{ position: 'relative', zIndex: 5 }}>
-        <Routes>
-          <Route path="/" element={<div />} /> {/* Dummy route for home since it's handled above */}
-          <Route path="/work" element={<WorkPage />} />
-          <Route path="/work/:slug" element={<ProjectDetail />} />
-        </Routes>
-      </div>
-    </>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/work" element={<WorkPage />} />
+      <Route path="/work/:slug" element={<ProjectDetail />} />
+    </Routes>
   );
 }
-

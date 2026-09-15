@@ -1,5 +1,4 @@
 import type { CSSProperties } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import styles from './GlobalHeader.module.css';
 import { useAppStore } from '../../state/useAppStore';
@@ -65,13 +64,6 @@ export default function GlobalHeader() {
   const theme = useAppStore((s) => s.theme);
   const toggleTheme = useAppStore((s) => s.toggleTheme);
   const navigateTo = useTransitionNavigate();
-  const location = useLocation();
-
-  const isOnWork = location.pathname.startsWith('/work');
-
-  const handleArchiveToggle = () => {
-    navigateTo(isOnWork ? '/' : '/work');
-  };
 
   return (
     <header
@@ -109,15 +101,6 @@ export default function GlobalHeader() {
         {theme === 'dark' ? '○' : '◑'}
       </button>
 
-      {/* Archive / Home toggle */}
-      <button
-        className={`${styles.archiveButton} ${isOnWork ? styles.archiveButtonActive : ''}`}
-        onClick={handleArchiveToggle}
-        aria-label={isOnWork ? 'Close archive — return home' : 'Open projects archive'}
-      >
-        {isOnWork ? '[ + CLOSE ARCHIVE ]' : '+ PROJECTS'}
-      </button>
-
       <a
         href="#contact"
         className={styles.ctaLink}
@@ -127,4 +110,4 @@ export default function GlobalHeader() {
       </a>
     </header>
   );
-}
+}

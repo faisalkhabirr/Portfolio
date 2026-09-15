@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useAppStore } from '../../state/useAppStore';
 import { useViewport } from '../../hooks/useViewport';
+import { useTransitionNavigate } from '../../context/TransitionContext';
 
 import styles from './DialoguePanel.module.css';
 
@@ -14,11 +15,6 @@ const DIALOGUES = {
     'Try not to stare too long. Khabir is a genius! Hire him before I come to find you.',
 } as const;
 
-/*
- * Desktop values UNCHANGED (characterDelay: 5, punctuationMultiplier: 3.15).
- * Mobile tuned snappier per the 8-second total budget — see intro.ts for
- * the rest of the sequence timing.
- */
 const TYPEWRITER_CONFIG = {
   desktop: {
     characterDelay: 5,
@@ -34,7 +30,6 @@ const CTA_ITEMS = [
   'Discover About Khabir',
   'Work',
   'Get in touch',
-  // 'Contact',
   'Write us: faisalkhabirr@gmail.com',
 ] as const;
 
@@ -53,6 +48,7 @@ export default function DialoguePanel() {
   );
 
   const { isMobile } = useViewport();
+  const navigateTo = useTransitionNavigate();
 
   const [displayedText, setDisplayedText] = useState('');
   const [previousText, setPreviousText] = useState('');
@@ -139,15 +135,28 @@ export default function DialoguePanel() {
   const handleEmailCopy = async () => {
     try {
       await navigator.clipboard.writeText(EMAIL);
-
       setCopied(true);
-
       window.setTimeout(() => {
         setCopied(false);
       }, 1400);
     } catch (error) {
       console.error('[DialoguePanel] Failed to copy email:', error);
     }
+  };
+
+  const handleCtaClick = (label: (typeof CTA_ITEMS)[number]) => {
+    if (label.includes('.com')) {
+      handleEmailCopy();
+      return;
+    }
+
+    if (label === 'Work') {
+      navigateTo('/work');
+      return;
+    }
+
+    // 'Discover About Khabir' and 'Get in touch' are no-ops until those
+    // pages/sections exist — intentionally left unwired.
   };
 
   return (
@@ -203,7 +212,7 @@ export default function DialoguePanel() {
                   isEmailCTA ? styles.emailCta : ''
                 }`}
                 data-intro="cta-item"
-                onClick={isEmailCTA ? handleEmailCopy : undefined}
+                onClick={() => handleCtaClick(label)}
                 aria-label={
                   isEmailCTA
                     ? copied
@@ -252,7 +261,6 @@ export default function DialoguePanel() {
                           stroke="currentColor"
                           strokeWidth="1.4"
                         />
-
                         <path
                           d="M3 5.5H2.8C2.02 5.5 1.4 6.12 1.4 6.9V13.2C1.4 13.97 2.02 14.6 2.8 14.6H9.1C9.88 14.6 10.5 13.97 10.5 13.2V13"
                           stroke="currentColor"

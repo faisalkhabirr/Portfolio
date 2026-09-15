@@ -80,3 +80,16 @@ body,
   pointer-events: none;
   z-index: 10;
 }
+
+
+/* Dark background for the whole document — required globally, not just on
+   /work, because CSS Modules do not reliably scope bare element selectors
+   like html/body. A rule like this sitting inside a .module.css file can
+   silently fail to apply, leaving <body>'s real background at browser
+   default white — which is exactly what any fade-to-transparent effect
+   (masks, gradient overlays) will reveal underneath it. */
+html, body {
+  background-color: #0a0a0a;
+  margin: 0;
+  padding: 0;
+}
