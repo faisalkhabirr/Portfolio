@@ -162,6 +162,20 @@ interface AppState {
   theme: 'dark' | 'light';
 
   toggleTheme: () => void;
+
+  /* ------------------------------------------------------------------ */
+  /* CONTACT OVERLAY                                                     */
+  /* ------------------------------------------------------------------ */
+  //
+  // Shared so both GlobalHeader's "Let's talk" and DialoguePanel's
+  // "Get in touch" can open the exact same full-screen overlay without
+  // prop-drilling between two unrelated component trees.
+
+  isContactOpen: boolean;
+
+  openContact: () => void;
+
+  closeContact: () => void;
 }
 
 export const useAppStore =
@@ -365,4 +379,16 @@ export const useAppStore =
         document.documentElement.setAttribute('data-theme', next);
         return { theme: next };
       }),
+
+    /* ================================================================== */
+    /* CONTACT OVERLAY                                                     */
+    /* ================================================================== */
+
+    isContactOpen: false,
+
+    openContact: () =>
+      set({ isContactOpen: true }),
+
+    closeContact: () =>
+      set({ isContactOpen: false }),
   }));

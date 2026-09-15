@@ -1,0 +1,133 @@
+/* Dims the Home page behind the panel; clicking the exposed strip below
+   the panel closes the overlay via the onClick check in the component. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: flex-start; /* panel hugs the top, not centered */
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.99);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* The contact banner — full width, flush against the very top of the
+   viewport, dropping down into place. No side margins, no gap above it. */
+.panel {
+  position: relative;
+  width: 100%;
+  height: 75vh;
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
+
+  background-image: url('/assets/contact-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: var(--bg-color, #0C0D0D); /* fallback until the art is in */
+
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+  animation: dropDown 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes dropDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* Plain text, no box — only the email gets a box on this overlay. */
+.backButton {
+  position: absolute;
+  top: clamp(14px, 2.5vw, 24px);
+  right: clamp(20px, 4vw, 40px);
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.2s ease;
+}
+
+.backButton:hover {
+  opacity: 0.7;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* The ONE boxed element on this overlay — explicit, theme-independent
+   colors since it sits on top of art, not your site's light/dark surfaces.
+   Slight rotation gives it the hand-placed "sticker" look. */
+.emailPill {
+  border: 1.5px solid #101317;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #101317;
+  font-family: inherit;
+  font-size: clamp(15px, 2vw, 24px);
+  font-weight: 700;
+  padding: 12px 28px;
+  cursor: pointer;
+  transform: rotate(-2deg);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.emailPill:hover {
+  transform: rotate(-2deg) translateY(-2px);
+}
+
+.meta {
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.socials {
+  position: absolute;
+  bottom: clamp(16px, 3vw, 32px);
+  left: clamp(20px, 4vw, 40px);
+  right: clamp(20px, 4vw, 40px);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Plain text, no box — matching backButton. */
+.socialLink {
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-decoration: none;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.2s ease;
+}
+
+.socialLink:hover {
+  opacity: 0.7;
+}

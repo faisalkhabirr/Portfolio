@@ -7,6 +7,7 @@ import GlobalHeader from '../../components/ui/GlobalHeader';
 import DialoguePanel from '../../components/ui/DialoguePanel';
 import FooterControls from '../../components/ui/FooterControls';
 import Preloader from '../../components/ui/Preloader';
+import ContactOverlay from '../../components/ui/ContactOverlay';
 
 import { usePointerTracking } from '../../hooks/usePointerTracking';
 import { playIntroSequence } from '../../animation/intro';
@@ -49,6 +50,7 @@ export default function HomePage() {
 
       <Preloader />
       <NodeTreeOverlay />
+      <ContactOverlay />
     </div>
   );
 }

@@ -69,7 +69,7 @@ export default function SceneCanvas() {
       dpr={[1, 2]}
       gl={{
         antialias: true,
-        toneMappingExposure: 1.15,
+        toneMappingExposure: 1.55,
       }}
       style={{
         position: 'absolute',

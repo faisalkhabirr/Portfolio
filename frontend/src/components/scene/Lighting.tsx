@@ -31,13 +31,13 @@ export default function Lighting() {
       />
 
       <ambientLight
-        intensity={0.3}
+        intensity={0.5}
         color={tokens.white}
       />
 
       <directionalLight
         position={[4, 6, 7]}
-        intensity={2.7}
+        intensity={1.7}
         color={tokens.white}
       />
 
@@ -49,7 +49,7 @@ export default function Lighting() {
 
       <directionalLight
         position={[0, 6, -6]}
-        intensity={1.15}
+        intensity={6.15}
         color={tokens.cyan}
       />
     </>

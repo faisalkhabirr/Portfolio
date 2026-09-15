@@ -49,6 +49,7 @@ export default function DialoguePanel() {
 
   const { isMobile } = useViewport();
   const navigateTo = useTransitionNavigate();
+  const openContact = useAppStore((state) => state.openContact);
 
   const [displayedText, setDisplayedText] = useState('');
   const [previousText, setPreviousText] = useState('');
@@ -155,8 +156,13 @@ export default function DialoguePanel() {
       return;
     }
 
-    // 'Discover About Khabir' and 'Get in touch' are no-ops until those
-    // pages/sections exist — intentionally left unwired.
+    if (label === 'Get in touch') {
+      openContact();
+      return;
+    }
+
+    // 'Discover About Khabir' is a no-op until that page/section exists —
+    // intentionally left unwired.
   };
 
   return (

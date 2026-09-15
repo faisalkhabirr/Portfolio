@@ -63,6 +63,7 @@ function FlipText({
 export default function GlobalHeader() {
   const theme = useAppStore((s) => s.theme);
   const toggleTheme = useAppStore((s) => s.toggleTheme);
+  const openContact = useAppStore((s) => s.openContact);
   const navigateTo = useTransitionNavigate();
 
   return (
@@ -105,6 +106,10 @@ export default function GlobalHeader() {
         href="#contact"
         className={styles.ctaLink}
         aria-label="Let's talk"
+        onClick={(e) => {
+          e.preventDefault();
+          openContact();
+        }}
       >
         <FlipText text="Let's talk" />
       </a>
