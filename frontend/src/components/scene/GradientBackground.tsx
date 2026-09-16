@@ -9,8 +9,8 @@ export function GradientBackground() {
       <planeGeometry args={[1, 1]} />
       <shaderMaterial
         uniforms={{
-          uColorInner: { value: new THREE.Color('#f8fafc') }, // Bright soft white-grey core on the left/center
-          uColorOuter: { value: new THREE.Color('#8b9bb4') }, // Sophisticated cool-grey vignette on the edges/right
+          uColorInner: { value: new THREE.Color('#f8f9f9') }, // Bright f8f9f9 soft white-grey core on the left/center
+          uColorOuter: { value: new THREE.Color('#c2babae8') }, // Sophisticated cool-grey vignette on the edges/right
         }}
         vertexShader={`
           varying vec2 vUv;

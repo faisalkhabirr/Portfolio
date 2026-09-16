@@ -43,7 +43,7 @@ export function useScrambleText(
     const currentChars = [...finalChars];
 
     finalChars.forEach((char, i) => {
-      if (char === ' ') return;
+      if (!/[a-zA-Z0-9]/.test(char)) return; // leave spaces/punctuation static
 
       let cycle = 0;
       const runCycle = () => {

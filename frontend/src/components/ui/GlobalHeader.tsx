@@ -93,15 +93,7 @@ export default function GlobalHeader() {
       </div>
 
       {/* Theme toggle */}
-      <button
-        className={styles.themeToggle}
-        onClick={toggleTheme}
-        aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-      >
-        {theme === 'dark' ? '○' : '◑'}
-      </button>
-
+      
       <a
         href="#contact"
         className={styles.ctaLink}

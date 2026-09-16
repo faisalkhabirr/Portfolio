@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/Home/HomePage';
 import WorkPage from './pages/Work/WorkPage';
 import ProjectDetail from './pages/Work/ProjectDetail';
+import AboutPage from './pages/About/AboutPage';
 
 import { useTheme } from './hooks/useTheme';
 
@@ -15,10 +16,11 @@ import { useTheme } from './hooks/useTheme';
 //   - SceneCanvas / Three.js renderer
 //   - usePointerTracking()
 //   - playIntroSequence()
-//   - GlobalHeader, DialoguePanel, FooterControls, Preloader, NodeTreeOverlay
+//   - DialoguePanel, FooterControls, Preloader, NodeTreeOverlay
 //
-// Hiding the 3D scene with opacity/visibility does NOT stop the R3F render
-// loop — that was the original cause of ~90% CPU on /work.
+// GlobalHeader and ContactOverlay ARE shared across Home and About (both
+// mount them directly in their own page component) since neither does any
+// 3D/heavy work — only Work opts out, using its own WorksNavbar instead.
 export default function App() {
   useTheme();
 
@@ -27,6 +29,7 @@ export default function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/work" element={<WorkPage />} />
       <Route path="/work/:slug" element={<ProjectDetail />} />
+      <Route path="/about" element={<AboutPage />} />
     </Routes>
   );
 }

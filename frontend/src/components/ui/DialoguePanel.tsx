@@ -161,8 +161,10 @@ export default function DialoguePanel() {
       return;
     }
 
-    // 'Discover About Khabir' is a no-op until that page/section exists —
-    // intentionally left unwired.
+    if (label === 'Discover About Khabir') {
+      navigateTo('/about');
+      return;
+    }
   };
 
   return (
