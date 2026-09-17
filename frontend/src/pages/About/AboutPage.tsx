@@ -10,11 +10,11 @@ const TITLE_NAME = 'khabirr.';
 const TITLE_ROLE = '/ Creative Developer';
 
 const BIO_LINES = [
-  'Design-driven developer building interfaces',
+  'Design driven developer building interfaces',
   'that feel less like software and more like',
   'experience. Currently in my final year of',
   'Computer Science, moving from full-stack',
-  'engineering into AI-native product work —',
+  'engineering into AI native product work',
   'blending motion, interaction and machine',
   'intelligence into things worth lingering on.',
 ];
@@ -66,6 +66,7 @@ export default function AboutPage() {
           </button>
 
           <div className={styles.infoLabel}>
+            <span className={styles.infoDash} aria-hidden="true" />
             <MaskLines lines={['Info Info']} baseDelay={0.3} />
           </div>
 

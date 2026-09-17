@@ -1,26 +1,53 @@
 .page {
   position: fixed;
   inset: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+
+  width: 100%;
+  height: 100dvh;
+
+  overflow: hidden;
+  overscroll-behavior: none;
+
   background-color: var(--bg-color, #E8EDEA);
   color: var(--text-color, #101317);
+
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 /* Gives GlobalHeader the same fixed-position, high-z-index context it
-   normally gets from Home's .ui-layer wrapper — without this it has no
-   guaranteed stacking/positioning context of its own on this page. */
+   normally gets from Home's .ui-layer wrapper. Inverted here specifically
+   because this page's background is black — GlobalHeader assumes Home's
+   light background, so its own colors read as invisible/wrong here.
+   NOTE: filter: invert(1) flips every color inside it, including the
+   accent red-orange (comes out cyan-ish). If that's a problem, this needs
+   to target GlobalHeader's actual color source instead of this blunt trick. */
 .headerLayer {
   position: fixed;
   inset: 0;
   z-index: 50;
   pointer-events: none;
   opacity: 1 !important;
+  filter: invert(1);
 }
 
 .headerLayer > * {
   pointer-events: auto;
+}
+
+/* Page-wide fade at the bottom edge. Deliberately a separate overlay
+   layer, NOT a mask-image on .page itself — masking an element that also
+   contains the fixed navbar fades the navbar too (this exact bug already
+   happened once on /work). Sits below the navbar's z-index, above content. */
+.page::after {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 140px;
+  z-index: 40;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--bg-color, #0C0D0D) 0%, transparent 100%);
 }
 
 .content {
@@ -29,7 +56,7 @@
   align-items: stretch;
   gap: clamp(24px, 5vw, 80px);
   min-height: 100vh;
-  padding: clamp(90px, 12vh, 140px) clamp(24px, 6vw, 100px) clamp(80px, 10vh, 120px);
+  padding: clamp(64px, 9vh, 90px) clamp(24px, 6vw, 100px) clamp(80px, 10vh, 120px);
   box-sizing: border-box;
 }
 
@@ -37,7 +64,6 @@
 .left {
   display: flex;
   flex-direction: column;
-  gap: clamp(20px, 3vw, 36px);
 }
 
 .titleButton {
@@ -61,6 +87,7 @@
 }
 
 .infoLabel {
+  margin-top: 28px;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -68,7 +95,19 @@
   color: var(--text-muted, #4E5965);
 }
 
+.infoDash {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  margin-bottom: 8px;
+  background: var(--text-muted, #4E5965);
+}
+
 .bio {
+  /* Deliberately much larger than the title→info gap, and indented
+     further than the title — matches the reference's uneven rhythm. */
+  margin-top: 130px;
+  margin-left: clamp(24px, 4vw, 60px);
   font-size: clamp(16px, 2vw, 22px);
   line-height: 1.5;
   color: var(--text-color, #101317);
@@ -110,22 +149,186 @@
 }
 
 /* ── Responsive: stack columns, simplify bars, tighten spacing ───────── */
+/* ================================================================
+   MOBILE
+   ================================================================ */
 @media (max-width: 860px) {
-  .content {
-    grid-template-columns: 1fr;
-    padding: clamp(80px, 14vh, 110px) 20px 100px;
-    gap: 32px;
+  .page {
+    position: relative;
+
+    width: 100%;
+    min-height: 100dvh;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    overscroll-behavior: auto;
   }
 
-  .right {
-    justify-content: stretch;
-    order: -1; /* bars above text on mobile, matching the reference's visual weight */
+  /* ------------------------------------------------
+     MAIN MOBILE STAGE
+     ------------------------------------------------ */
+
+  .content {
+    position: relative;
+
+    display: block;
+
+    width: 100%;
+    min-height: 100dvh;
+    height: auto;
+
+    padding: 0;
+
+    overflow: visible;
+    box-sizing: border-box;
   }
+
+  /* ------------------------------------------------
+     MOVING BOXES / BACKGROUND
+     ------------------------------------------------ */
+
+  .right {
+    position: absolute;
+    inset: 0;
+
+    z-index: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    min-height: 100dvh;
+
+    overflow: hidden;
+
+    opacity: 0.16;
+
+    pointer-events: none;
+
+    transform: scale(1.08);
+  }
+
+  /* ------------------------------------------------
+     TEXT LAYER
+     ------------------------------------------------ */
+
+  .left {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    width: 100%;
+    max-width: none;
+
+    min-height: 100dvh;
+    height: auto;
+
+    padding-right: 10px;
+
+    box-sizing: border-box;
+
+    gap: 12px;
+
+    pointer-events: none;
+  }
+
+  /* Let the title itself remain interactive */
+  .titleButton {
+    pointer-events: auto;
+
+    width: fit-content;
+    max-width: 100%;
+
+    font-size: clamp(32px, 50vw, 52px);
+
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+
+    text-align: left;
+
+    padding-left: 11px;
+  }
+
+  .titleName {
+    color: var(--accent-color, #E8543A);
+    /* padding-left: 10px; */
+  }
+
+  .titleRole {
+    color: var(--text-color, #101317);
+    /* padding-left: 10px; */
+  }
+
+  /* ------------------------------------------------
+     INFO LABEL
+     ------------------------------------------------ */
+
+  .infoLabel {
+    font-size: 10px;
+    line-height: 1;
+
+    padding-left: 10px;
+
+    letter-spacing: 0.14em;
+
+    color: var(--text-muted, #4E5965);
+  }
+
+  /* ------------------------------------------------
+     BIO
+     ------------------------------------------------ */
+
+  .bio {
+    width: 95%;
+    max-width: 34ch;
+
+    font-size: clamp(12px, 5vw, 22px);
+
+    line-height: 1.38;
+
+    letter-spacing: -0.025em;
+
+    color: var(--text-color, #101317);
+
+    text-align: left;
+text-wrap: wrap;
+  }
+
+  /* ------------------------------------------------
+     CORNER ELEMENTS
+     ------------------------------------------------ */
 
   .cornerLeft,
   .cornerRight {
-    position: static;
-    display: block;
-    margin-top: 24px;
+    position: fixed;
+
+    bottom: 16px;
+
+    z-index: 60;
+
+    margin: 0;
+
+    font-size: 9px;
+
+    line-height: 1.2;
+
+    letter-spacing: 0.04em;
+  }
+
+  .cornerLeft {
+    left: 18px;
+  }
+
+  .cornerRight {
+    right: 18px;
   }
 }

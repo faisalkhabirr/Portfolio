@@ -1,61 +1,99 @@
 import styles from './SlidingBars.module.css';
 
-interface BarConfig {
+interface Segment {
   width: string;
-  height: number;
   color: string;
-  /** Striped/barcode texture instead of a flat fill. */
   pattern?: boolean;
-  /** Right-side inset — varying this (instead of flush-right for every
-      bar) is what gives the reference its jagged, collaged look rather
-      than a neat uniform column. */
-  offset?: string;
 }
 
-// Purely decorative — chosen for contrast against this page's dark
-// background, with texture/offset variety for visual richness.
-const BARS: BarConfig[] = [
-  { width: '42%', height: 88, color: '#4E5965', offset: '0%' },
-  { width: '64%', height: 56, color: '#8A9399', pattern: true, offset: '5%' },
-  { width: '30%', height: 128, color: 'var(--accent-color, #E8543A)', offset: '12%' },
-  { width: '52%', height: 64, color: '#F0F2F0', offset: '0%' },
-  { width: '68%', height: 48, color: '#8A9399', offset: '7%' },
-  { width: '36%', height: 104, color: '#4E5965', pattern: true, offset: '2%' },
-  { width: '58%', height: 60, color: '#F0F2F0', offset: '9%' },
-  { width: '46%', height: 72, color: '#8A9399', pattern: true, offset: '0%' },
-  { width: '72%', height: 44, color: '#4E5965', offset: '4%' },
-  { width: '34%', height: 96, color: 'var(--accent-color, #E8543A)', offset: '14%' },
-  { width: '60%', height: 52, color: '#F0F2F0', pattern: true, offset: '2%' },
-  { width: '40%', height: 84, color: '#8A9399', offset: '6%' },
+interface RowConfig {
+  height: number;
+  /** Right-side inset for the whole row — creates the jagged left edges. */
+  offset: string;
+  /** 1-2 segments rendered touching, left-to-right, no gap between them —
+      matches the reference's two-tone rows (e.g. dark block butted
+      directly against a blue block) rather than one flat color per row. */
+  segments: Segment[];
+}
+
+const DARK = '#4E5965';
+const LIGHT = '#F0F2F0';
+const MID = '#8A9399';
+const ACCENT = 'var(--accent-color, #E8543A)';
+
+// Dark-dominant, two-tone rows — matches the reference's mostly-black
+// palette with occasional accent-color segments and striped texture,
+// rows butted together with tight vertical spacing for a dense overlap.
+const ROWS: RowConfig[] = [
+  { height: 32, offset: '14%', segments: [{ width: '34%', color: DARK }, { width: '20%', color: ACCENT }] },
+  { height: 42, offset: '0%', segments: [{ width: '68%', color: MID, pattern: true }] },
+  { height: 46, offset: '6%', segments: [{ width: '30%', color: DARK }] },
+  { height: 40, offset: '12%', segments: [{ width: '26%', color: DARK }, { width: '38%', color: MID, pattern: true }] },
+  { height: 24, offset: '0%', segments: [{ width: '22%', color: DARK }, { width: '30%', color: ACCENT }] },
+  { height: 36, offset: '8%', segments: [{ width: '18%', color: DARK }, { width: '34%', color: LIGHT }] },
+  { height: 48, offset: '26%', segments: [{ width: '46%', color: DARK }] },
+  { height: 20, offset: '0%', segments: [{ width: '20%', color: MID }, { width: '36%', color: ACCENT }] },
+  { height: 32, offset: '10%', segments: [{ width: '44%', color: MID, pattern: true }, { width: '20%', color: DARK }] },
+  { height: 34, offset: '9%', segments: [{ width: '46%', color: DARK }, { width: '68%', color: LIGHT, pattern: true }] },
+  { height: 30, offset: '26%', segments: [{ width: '38%', color: DARK }] },
+  { height: 22, offset: '12%', segments: [{ width: '38%', color: DARK }, { width: '24%', color: ACCENT }] },
+  { height: 34, offset: '7%', segments: [{ width: '52%', color: MID, pattern: true }] },
+  { height: 46, offset: '12%', segments: [{ width: '40%', color: DARK }, { width: '30%', color: LIGHT }] },
+  { height: 24, offset: '25%', segments: [{ width: '50%', color: DARK }] },
+  { height: 50, offset: '10%', segments: [{ width: '72%', color: DARK }, { width: '48%', color: ACCENT }] },
+  { height: 20, offset: '28%', segments: [{ width: '44%', color: MID, pattern: true }] },
+  { height: 28, offset: '21%', segments: [{ width: '36%', color: DARK }, { width: '30%', color: LIGHT }] },
 ];
 
 function BarSet() {
   return (
     <div className={styles.set}>
-      {BARS.map((bar, i) => (
-        <div
-          key={i}
-          className={styles.bar}
-          style={{
-            width: bar.width,
-            height: bar.height,
-            marginRight: bar.offset ?? '0%',
-            backgroundColor: bar.pattern ? 'transparent' : bar.color,
-            backgroundImage: bar.pattern
-              ? `repeating-linear-gradient(0deg, ${bar.color} 0px, ${bar.color} 2px, transparent 2px, transparent 5px)`
-              : undefined,
-          }}
-        />
-      ))}
+      {ROWS.map((row, i) => {
+        // Sum the segments' widths (as fractions of the overall column) to
+        // get this row's own total width, then re-express each segment as
+        // a percentage OF THE ROW — nested percentages need a definite
+        // parent width to resolve against at every level, or they collapse
+        // to zero (which is exactly what happened before this fix).
+        const rowWidthPercent = row.segments.reduce(
+          (sum, seg) => sum + parseFloat(seg.width),
+          0
+        );
+
+        return (
+          <div
+            key={i}
+            className={styles.row}
+            style={{
+              height: row.height,
+              width: `${rowWidthPercent}%`,
+              marginRight: row.offset,
+            }}
+          >
+            {row.segments.map((seg, j) => (
+              <div
+                key={j}
+                className={styles.segment}
+                style={{
+                  width: `${(parseFloat(seg.width) / rowWidthPercent) * 100}%`,
+                  backgroundColor: seg.pattern ? 'transparent' : seg.color,
+                  backgroundImage: seg.pattern
+                    ? `repeating-linear-gradient(0deg, ${seg.color} 0px, ${seg.color} 2px, transparent 2px, transparent 5px)`
+                    : undefined,
+                }}
+              />
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 /**
- * A tall, dense stack of bars that continuously auto-scrolls upward,
- * looping seamlessly forever — not a one-time entrance animation. The
- * track renders the same bar set twice back-to-back and animates exactly
- * one set-height upward on a CSS loop, so the seam is invisible.
+ * A tall, dense stack of two-tone bar rows that continuously auto-scrolls
+ * upward, looping seamlessly forever. Renders the same row set twice
+ * back-to-back and animates exactly one set-height upward on a CSS loop,
+ * so the seam is invisible.
  */
 export function SlidingBars() {
   return (
