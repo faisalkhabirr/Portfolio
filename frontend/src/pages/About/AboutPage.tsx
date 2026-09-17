@@ -6,7 +6,7 @@ import GlobalHeader from '../../components/ui/GlobalHeader';
 import ContactOverlay from '../../components/ui/ContactOverlay';
 import styles from './AboutPage.module.css';
 
-const TITLE_NAME = 'khabirr.';
+const TITLE_NAME = 'Faisal';
 const TITLE_ROLE = '/ Creative Developer';
 
 const BIO_LINES = [

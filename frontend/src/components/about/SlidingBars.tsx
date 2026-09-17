@@ -19,7 +19,7 @@ interface RowConfig {
 const DARK = '#4E5965';
 const LIGHT = '#F0F2F0';
 const MID = '#8A9399';
-const ACCENT = 'var(--accent-color, #E8543A)';
+const ACCENT = 'var(--accent-color, #172748a1)';
 
 // Dark-dominant, two-tone rows — matches the reference's mostly-black
 // palette with occasional accent-color segments and striped texture,

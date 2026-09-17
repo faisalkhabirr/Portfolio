@@ -79,7 +79,8 @@
 }
 
 .titleName {
-  color: var(--accent-color, #E8543A);
+  color: var(--accent-color, #521114);
+  -webkit-text-stroke: 1px #ffffffc5;
 }
 
 .titleRole {
@@ -168,6 +169,11 @@
   /* ------------------------------------------------
      MAIN MOBILE STAGE
      ------------------------------------------------ */
+
+
+  .titleName {
+  -webkit-text-stroke: 0.2px #ffffffc5;
+  }
 
   .content {
     position: relative;
@@ -259,7 +265,7 @@
   }
 
   .titleName {
-    color: var(--accent-color, #E8543A);
+    color: var(--accent-color, #4D1113);
     /* padding-left: 10px; */
   }
 

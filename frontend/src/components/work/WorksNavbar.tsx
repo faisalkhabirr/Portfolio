@@ -67,13 +67,13 @@ export function WorksNavbar({
         className={styles.nav}
         aria-label="Works navigation"
       >
-        <button
+        {/* <button
           type="button"
           className={styles.pill}
           onClick={onProjectsClick}
         >
           + PROJECTS
-        </button>
+        </button> */}
 
         <button
           type="button"
