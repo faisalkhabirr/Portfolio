@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import styles from './MaskLines.module.css';
 
 interface MaskLinesProps {
-  lines: string[];
+  lines?: string[];
+  text?: string;
   /** Seconds before the first line starts revealing. */
   baseDelay?: number;
   /** Seconds between each subsequent line's reveal. */
@@ -13,12 +14,12 @@ interface MaskLinesProps {
 }
 
 /**
- * Splits text into lines, each masked inside an overflow-hidden row with
- * an inner span that slides up from translateY(110%) into place. Classic
- * "typewriter-readability" cascade reveal.
+ * Splits text into lines (or words if `text` is provided), each masked inside an 
+ * overflow-hidden row with an inner span that slides up from translateY(110%) into place. 
  */
 export function MaskLines({
-  lines,
+  lines = [],
+  text,
   baseDelay = 0,
   staggerStep = 0.08,
   className = '',
@@ -40,20 +41,26 @@ export function MaskLines({
     };
   }, [skipAnimation]);
 
+  const content = text ? text.split(' ') : lines;
+  const isWords = !!text;
+
   return (
     <>
-      {lines.map((line, i) => (
-        <div key={i} className={styles.row}>
-          <span
-            className={`${styles.inner} ${isRevealed ? styles.revealed : ''} ${className}`}
-            style={{ 
-              transitionDelay: skipAnimation ? '0s' : `${baseDelay + i * staggerStep}s`,
-              transitionDuration: skipAnimation ? '0s' : undefined
-            }}
-          >
-            {line}
-          </span>
-        </div>
+      {content.map((item, i) => (
+        <Fragment key={i}>
+          <div className={isWords ? styles.wordWrapper : styles.row}>
+            <span
+              className={`${styles.inner} ${isRevealed ? styles.revealed : ''} ${className}`}
+              style={{ 
+                transitionDelay: skipAnimation ? '0s' : `${baseDelay + i * staggerStep}s`,
+                transitionDuration: skipAnimation ? '0s' : undefined
+              }}
+            >
+              {item}
+            </span>
+          </div>
+          {isWords && ' '}
+        </Fragment>
       ))}
     </>
   );

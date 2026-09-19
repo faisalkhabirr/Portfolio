@@ -10,15 +10,7 @@ import styles from './AboutPage.module.css';
 const TITLE_NAME = 'Faisal';
 const TITLE_ROLE = '/ Creative Developer';
 
-const BIO_LINES = [
-  'Design driven developer building interfaces',
-  'that feel less like software and more like',
-  'experience. Currently in my final year of',
-  'Computer Science, moving from full-stack',
-  'engineering into AI native product work',
-  'blending motion, interaction and machine',
-  'intelligence into things worth lingering on.',
-];
+const BIO_TEXT = 'A developer who cares about how software feels, not just how it works. Currently in my final year of my BSc, moving from full-stack development into AI-native product engineering, blending design, interaction, motion and intelligence into products that feel worth coming back to.';
 
 const EMAIL = 'faisalkhabirr@gmail.com';
 
@@ -90,7 +82,7 @@ export default function AboutPage() {
           </div>
 
           <div className={styles.bio}>
-            <MaskLines lines={BIO_LINES} baseDelay={0.4} staggerStep={0.06} skipAnimation={skipIntro} />
+            <MaskLines text={BIO_TEXT} baseDelay={0.4} staggerStep={0.02} skipAnimation={skipIntro} />
           </div>
         </div>
 

@@ -15,3 +15,9 @@
   transform: translateY(0);
   opacity: 1;
 }
+
+.wordWrapper {
+  overflow: hidden;
+  display: inline-flex;
+  vertical-align: bottom;
+}
