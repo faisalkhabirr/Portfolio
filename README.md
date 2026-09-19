@@ -1,6 +1,6 @@
 # Portfolio
 
-A modern, interactive personal portfolio built with **React and Vite**, designed to showcase projects, technical skills, experience, and creative frontend work through a highly interactive interface.
+A modern, interactive personal portfolio built with **React, TypeScript, and Vite**, designed to showcase projects, technical skills, experience, and creative frontend work through a highly interactive interface.
 
 The project follows a **decoupled frontend/backend architecture**, keeping the client-side experience separate from server-side functionality and making the application easier to develop, maintain, and deploy.
 
@@ -13,6 +13,7 @@ The project follows a **decoupled frontend/backend architecture**, keeping the c
 * Responsive portfolio experience across desktop and mobile
 * Interactive and animated UI elements
 * Component-based React architecture
+* Type-safe development with TypeScript
 * Client-side routing
 * Global state management with Zustand
 * API communication using Axios
@@ -29,7 +30,8 @@ The project follows a **decoupled frontend/backend architecture**, keeping the c
 ### Frontend
 
 * **React** — Component-based UI development
-* **Vite** — Development server and production build tooling
+* **TypeScript** — Type-safe application development
+* **Vite** — Development server and build tooling
 * **React Router** — Client-side navigation
 * **Zustand** — Lightweight global state management
 * **Axios** — HTTP requests and API communication
@@ -67,7 +69,7 @@ PortfolioWithMinions/
 │   │   ├── store/
 │   │   └── ...
 │   ├── package.json
-│   └── vite.config.js
+│   └── vite.config.ts
 │
 ├── backend/
 │   ├── server.js
@@ -83,15 +85,14 @@ PortfolioWithMinions/
 └── README.md
 ```
 
-> The exact contents of individual directories may evolve as the application continues to grow.
-
 ---
 
 ## Project Goals
 
-This project is more than a static portfolio. It serves as a practical implementation of modern frontend development principles, including:
+This project serves as a practical implementation of modern frontend development principles, including:
 
 * Component-driven architecture
+* Type-safe development with TypeScript
 * Responsive design
 * Interactive UI development
 * State management
@@ -100,13 +101,11 @@ This project is more than a static portfolio. It serves as a practical implement
 * Production deployment
 * Maintainable project organization
 
-It is also an evolving project that will continue to incorporate new technologies, interactions, and engineering practices as development progresses.
+The portfolio is an evolving project focused on combining **software engineering, interface design, interaction, and intelligent systems**.
 
 ---
 
 ## Future Improvements
-
-Planned improvements may include:
 
 * Further performance optimization
 * Enhanced accessibility
@@ -129,9 +128,7 @@ This portfolio represents my ongoing journey from full-stack web development tow
 
 ---
 
-## 📄 License
+## License
 
-This project is intended primarily as a personal portfolio and learning project. Please contact the author before reusing substantial portions of the design, content, or implementation.
+This project is intended primarily as a personal portfolio project. Please contact the author before reusing substantial portions of the design, content, or implementation.
 
-```
-```
