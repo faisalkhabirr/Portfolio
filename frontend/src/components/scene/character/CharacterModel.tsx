@@ -35,6 +35,24 @@ import {
 } from './CharacterPose';
 
 /* ========================================================================= */
+/* VIRGIN POSE CACHE                                                         */
+/* ========================================================================= */
+/*
+ * useGLTF returns a cached, SHARED scene object across mounts. When
+ * CharacterModel unmounts (route change) and remounts (return to Home),
+ * the same Three.js scene is reused — but the component's useRef values
+ * (hasSetup, etc.) are fresh. Without resetting the scene first, calling
+ * applyCrossedArmsPose and orientRootToFaceCamera again stacks on top of
+ * the already-posed bones and already-rotated root, producing a broken pose.
+ *
+ * Solution: capture each bone's quaternion BEFORE any pose is applied, once
+ * per session. On every mount, restore from these virgin values first.
+ */
+const virginBoneQuaternions = new Map<string, THREE.Quaternion>();
+let virginScenePosition: THREE.Vector3 | null = null;
+let virginGroupRotationY: number | null = null;
+
+/* ========================================================================= */
 /* CAMERA / COMPOSITION                                                      */
 /* ========================================================================= */
 
@@ -111,10 +129,7 @@ export default function CharacterModel({
   /* ======================================================================= */
 
   useLayoutEffect(() => {
-    if (
-      !gltf?.scene ||
-      hasSetup.current
-    ) {
+    if (!gltf?.scene) {
       return;
     }
 
@@ -123,14 +138,56 @@ export default function CharacterModel({
     const scene =
       gltf.scene;
 
+    /* --------------------------------------------------------------------- */
+    /* VIRGIN POSE SAVE / RESTORE                                            */
+    /* --------------------------------------------------------------------- */
+    /*
+     * First ever mount: capture all bone quaternions + scene position +
+     * group Y rotation BEFORE any pose is applied. These are the raw values
+     * from the GLTF file itself.
+     *
+     * Every subsequent mount (revisit): restore from those saved values so
+     * applyCrossedArmsPose and orientRootToFaceCamera never stack on top of
+     * a previously-posed skeleton.
+     */
+
+    const allBones = collectBones(scene);
+
+    if (virginScenePosition === null) {
+      // First ever setup — save the virgin state.
+      virginScenePosition = scene.position.clone();
+      virginGroupRotationY = groupRef.current?.rotation.y ?? 0;
+
+      allBones.forEach((bone) => {
+        virginBoneQuaternions.set(
+          bone.uuid,
+          bone.quaternion.clone(),
+        );
+      });
+    } else {
+      // Revisit — restore the virgin state before re-posing.
+      scene.position.copy(virginScenePosition);
+
+      if (groupRef.current) {
+        groupRef.current.rotation.y =
+          virginGroupRotationY ?? 0;
+      }
+
+      allBones.forEach((bone) => {
+        const saved =
+          virginBoneQuaternions.get(bone.uuid);
+
+        if (saved) {
+          bone.quaternion.copy(saved);
+        }
+      });
+    }
+
     scene.updateMatrixWorld(true);
 
     /* --------------------------------------------------------------------- */
     /* INSPECTION                                                            */
     /* --------------------------------------------------------------------- */
-
-    const bones =
-      collectBones(scene);
 
     const report =
       runGLTFInspection(gltf);
@@ -156,7 +213,7 @@ export default function CharacterModel({
 
     console.log(
       'Total bones:',
-      bones.length,
+      allBones.length,
     );
 
     console.log(
@@ -351,8 +408,19 @@ export default function CharacterModel({
       perspectiveCamera.far =
         distance * 10;
 
+      const virtualWidth =
+        size.width *
+        (
+          1 +
+          DESKTOP_COMPOSITION_OFFSET
+        );
+
+      /*
+       * aspect must match the virtual canvas used in setViewOffset,
+       * otherwise the projection matrix is wrong and the model appears fat.
+       */
       perspectiveCamera.aspect =
-        size.width /
+        virtualWidth /
         size.height;
 
       perspectiveCamera.lookAt(
@@ -360,13 +428,6 @@ export default function CharacterModel({
         modelHeight * 0.08,
         0,
       );
-
-      const virtualWidth =
-        size.width *
-        (
-          1 +
-          DESKTOP_COMPOSITION_OFFSET
-        );
 
       perspectiveCamera.setViewOffset(
         virtualWidth,

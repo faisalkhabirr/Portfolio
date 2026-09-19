@@ -8,6 +8,8 @@ interface MaskLinesProps {
   /** Seconds between each subsequent line's reveal. */
   staggerStep?: number;
   className?: string;
+  /** If true, the lines start fully revealed with no animation. */
+  skipAnimation?: boolean;
 }
 
 /**
@@ -20,10 +22,13 @@ export function MaskLines({
   baseDelay = 0,
   staggerStep = 0.08,
   className = '',
+  skipAnimation = false,
 }: MaskLinesProps) {
-  const [isRevealed, setIsRevealed] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(skipAnimation);
 
   useEffect(() => {
+    if (skipAnimation) return;
+    
     // Double rAF — see SlidingBars.tsx for why a single rAF isn't reliable.
     let innerRaf: number;
     const outerRaf = requestAnimationFrame(() => {
@@ -33,7 +38,7 @@ export function MaskLines({
       cancelAnimationFrame(outerRaf);
       if (innerRaf) cancelAnimationFrame(innerRaf);
     };
-  }, []);
+  }, [skipAnimation]);
 
   return (
     <>
@@ -41,7 +46,10 @@ export function MaskLines({
         <div key={i} className={styles.row}>
           <span
             className={`${styles.inner} ${isRevealed ? styles.revealed : ''} ${className}`}
-            style={{ transitionDelay: `${baseDelay + i * staggerStep}s` }}
+            style={{ 
+              transitionDelay: skipAnimation ? '0s' : `${baseDelay + i * staggerStep}s`,
+              transitionDuration: skipAnimation ? '0s' : undefined
+            }}
           >
             {line}
           </span>

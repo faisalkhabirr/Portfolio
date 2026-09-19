@@ -6,5 +6,5 @@ import { PerspectiveCamera } from '@react-three/drei';
 // box (we don't know the minion's true scale until it's loaded — this
 // asset has never been measured).
 export default function CameraRig() {
-  return <PerspectiveCamera makeDefault fov={32} position={[0, 0.13, 6]} near={0.1} far={100} />;
+  return <PerspectiveCamera makeDefault manual fov={32} position={[0, 0.13, 6]} near={0.1} far={100} />;
 }

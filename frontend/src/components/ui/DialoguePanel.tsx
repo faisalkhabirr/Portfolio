@@ -50,8 +50,17 @@ export default function DialoguePanel() {
   const { isMobile } = useViewport();
   const navigateTo = useTransitionNavigate();
   const openContact = useAppStore((state) => state.openContact);
+  const hasVisitedHome = useAppStore((state) => state.visitedViews.home);
 
-  const [displayedText, setDisplayedText] = useState('');
+  const [displayedText, setDisplayedText] = useState(() =>
+    // On a revisit (typewriter already finished this session), skip
+    // straight to the full final text instead of starting blank — nothing
+    // will re-trigger the typing effect below since typewriterActive is
+    // false again once it completes.
+    useAppStore.getState().typewriterComplete
+      ? DIALOGUES[useAppStore.getState().dialogueId]
+      : ''
+  );
   const [previousText, setPreviousText] = useState('');
   const [copied, setCopied] = useState(false);
 
@@ -171,20 +180,20 @@ export default function DialoguePanel() {
     <>
       <div
         className={styles.glitchOverlay}
-        data-intro="glitch-overlay"
+        data-intro={hasVisitedHome ? undefined : 'glitch-overlay'}
         aria-hidden="true"
       />
 
       <section
         className={styles.panel}
         aria-label="Introduction"
-        data-intro="dialogue-panel"
+        data-intro={hasVisitedHome ? undefined : 'dialogue-panel'}
       >
         <div className={styles.dialogueStack}>
           {previousText && (
             <div
               className={styles.previousDialogue}
-              data-intro="dialogue-previous"
+              data-intro={hasVisitedHome ? undefined : 'dialogue-previous'}
               aria-hidden="true"
             >
               {previousText}
@@ -193,7 +202,7 @@ export default function DialoguePanel() {
 
           <div
             className={styles.activeDialogue}
-            data-intro="dialogue-active"
+            data-intro={hasVisitedHome ? undefined : 'dialogue-active'}
           >
             <span>{displayedText}</span>
 
@@ -207,7 +216,7 @@ export default function DialoguePanel() {
           className={`${styles.actions} ${
             showCTA ? styles.actionsVisible : ''
           }`}
-          data-intro="cta-buttons"
+          data-intro={hasVisitedHome ? undefined : 'cta-buttons'}
         >
           {CTA_ITEMS.map((label) => {
             const isEmailCTA = label.includes('.com');
@@ -219,7 +228,7 @@ export default function DialoguePanel() {
                 className={`${styles.cta} ${
                   isEmailCTA ? styles.emailCta : ''
                 }`}
-                data-intro="cta-item"
+                data-intro={hasVisitedHome ? undefined : 'cta-item'}
                 onClick={() => handleCtaClick(label)}
                 aria-label={
                   isEmailCTA

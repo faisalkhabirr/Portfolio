@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAppStore } from '../../state/useAppStore';
 import { projects } from '../../data/projects';
 import { ProjectThumbnailStrip } from '../../components/work/ProjectThumbnailStrip';
 import { WorksPreloader } from '../../components/work/WorksPreloader';
@@ -83,7 +84,10 @@ function ProjectRow({
 }
 
 export default function WorkPage() {
-  const [preloaderDone, setPreloaderDone] = useState(false);
+  const hasVisitedWork = useAppStore((s) => s.visitedViews.work);
+  const markVisited = useAppStore((s) => s.markVisited);
+
+  const [preloaderDone, setPreloaderDone] = useState(hasVisitedWork);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const [decodeTrigger, setDecodeTrigger] = useState(0);
   const [hasDecodedOnce, setHasDecodedOnce] = useState(false);
@@ -127,7 +131,14 @@ export default function WorkPage() {
 
   return (
     <>
-      {!preloaderDone && <WorksPreloader onComplete={() => setPreloaderDone(true)} />}
+      {!preloaderDone && (
+        <WorksPreloader 
+          onComplete={() => {
+            setPreloaderDone(true);
+            markVisited('work');
+          }} 
+        />
+      )}
 
       <div className={styles.page}>
         <WorksNavbar onProjectsClick={scrollToTop} />

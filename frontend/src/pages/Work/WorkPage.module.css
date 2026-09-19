@@ -23,6 +23,10 @@
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
 }
 
+.scrollViewport::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, new Edge */
+}
+
 .scrollContent {
   will-change: transform;
   padding-top: 110px;

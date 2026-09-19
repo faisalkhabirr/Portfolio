@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAppStore } from '../../state/useAppStore';
 import { useScrambleText } from '../../hooks/useScrambleText';
 import { MaskLines } from '../../components/about/MaskLines';
 import { SlidingBars } from '../../components/about/SlidingBars';
@@ -22,19 +23,37 @@ const BIO_LINES = [
 const EMAIL = 'faisalkhabirr@gmail.com';
 
 export default function AboutPage() {
+  const storeHasVisited = useAppStore((s) => s.visitedViews.about);
+  const markVisited = useAppStore((s) => s.markVisited);
+  
+  // Capture the initial visited state for this mount so we don't accidentally
+  // change it mid-render (which would cancel in-progress CSS animations).
+  const [skipIntro] = useState(storeHasVisited);
+
+  useEffect(() => {
+    if (!skipIntro) {
+      markVisited('about');
+    }
+  }, [skipIntro, markVisited]);
+
   const [logoHoverCount, setLogoHoverCount] = useState(0);
   const [copied, setCopied] = useState(false);
+
+  // If visited before, don't scramble on mount (wait for hover).
+  // logoHoverCount > 0 means the user hovered it, so we allow scrambling again.
+  const shouldScramble = !skipIntro || logoHoverCount > 0;
 
   const decodedName = useScrambleText(TITLE_NAME, logoHoverCount, {
     cyclesPerChar: 10,
     cycleSpeed: 35,
     staggerPerChar: 30,
-  });
+  }, shouldScramble);
+
   const decodedRole = useScrambleText(TITLE_ROLE, logoHoverCount, {
     cyclesPerChar: 10,
     cycleSpeed: 35,
     staggerPerChar: 30,
-  });
+  }, shouldScramble);
 
   const handleCopyEmail = async () => {
     try {
@@ -67,11 +86,11 @@ export default function AboutPage() {
 
           <div className={styles.infoLabel}>
             <span className={styles.infoDash} aria-hidden="true" />
-            <MaskLines lines={['Info Info']} baseDelay={0.3} />
+            <MaskLines lines={['Info Info']} baseDelay={0.3} skipAnimation={skipIntro} />
           </div>
 
           <div className={styles.bio}>
-            <MaskLines lines={BIO_LINES} baseDelay={0.4} staggerStep={0.06} />
+            <MaskLines lines={BIO_LINES} baseDelay={0.4} staggerStep={0.06} skipAnimation={skipIntro} />
           </div>
         </div>
 

@@ -166,16 +166,36 @@ interface AppState {
   /* ------------------------------------------------------------------ */
   /* CONTACT OVERLAY                                                     */
   /* ------------------------------------------------------------------ */
-  //
-  // Shared so both GlobalHeader's "Let's talk" and DialoguePanel's
-  // "Get in touch" can open the exact same full-screen overlay without
-  // prop-drilling between two unrelated component trees.
 
   isContactOpen: boolean;
 
   openContact: () => void;
 
   closeContact: () => void;
+
+  /* ------------------------------------------------------------------ */
+  /* VISITED VIEWS                                                       */
+  /* ------------------------------------------------------------------ */
+  //
+  // Tracks which top-level views (e.g. 'home', 'work', 'about') have
+  // already played their preloader/entrance-decode sequence once during
+  // THIS session. Plain in-memory Zustand state — it is NOT persisted to
+  // localStorage, so a hard page refresh resets it and everyone gets the
+  // full intro again on first load. It only survives client-side route
+  // navigation within the running SPA (switching Home -> Work -> Home
+  // does NOT unmount the Zustand store, only the page components), which
+  // is exactly the "duration of session" scope asked for.
+  //
+  // Usage in a page component:
+  //   const hasVisited = useAppStore((s) => s.visitedViews.work);
+  //   const markVisited = useAppStore((s) => s.markVisited);
+  //   const [preloaderDone, setPreloaderDone] = useState(hasVisited);
+  //   ...
+  //   <WorksPreloader onComplete={() => { setPreloaderDone(true); markVisited('work'); }} />
+
+  visitedViews: Record<string, boolean>;
+
+  markVisited: (view: string) => void;
 }
 
 export const useAppStore =
@@ -391,4 +411,15 @@ export const useAppStore =
 
     closeContact: () =>
       set({ isContactOpen: false }),
+
+    /* ================================================================== */
+    /* VISITED VIEWS                                                       */
+    /* ================================================================== */
+
+    visitedViews: {},
+
+    markVisited: (view) =>
+      set((state) => ({
+        visitedViews: { ...state.visitedViews, [view]: true },
+      })),
   }));
