@@ -1,66 +1,137 @@
-# Full Stack Vite/React Architecture
+# Portfolio
 
-This project is structured into a classic decoupled architecture with a frontend and backend separating concerns completely. This makes it easier to scale, deploy, and maintain.
+A modern, interactive personal portfolio built with **React and Vite**, designed to showcase projects, technical skills, experience, and creative frontend work through a highly interactive interface.
 
-## Folder Structure
+The project follows a **decoupled frontend/backend architecture**, keeping the client-side experience separate from server-side functionality and making the application easier to develop, maintain, and deploy.
+
+**Live Website:** `faisalkhabirr.vercel.app`
+
+---
+
+## Features
+
+* Responsive portfolio experience across desktop and mobile
+* Interactive and animated UI elements
+* Component-based React architecture
+* Client-side routing
+* Global state management with Zustand
+* API communication using Axios
+* Reusable and modular UI components
+* Responsive layouts and mobile-specific interactions
+* Modern iconography with Lucide React
+* Separate frontend and backend architecture
+* Production deployment with Vercel
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* **React** — Component-based UI development
+* **Vite** — Development server and production build tooling
+* **React Router** — Client-side navigation
+* **Zustand** — Lightweight global state management
+* **Axios** — HTTP requests and API communication
+* **Lucide React** — Interface icons
+* **CSS / CSS Modules** — Styling and component-level design
+
+### Backend
+
+* **Node.js** — JavaScript runtime
+* **Express.js** — REST API framework
+* **Mongoose** — MongoDB object modeling
+* **MongoDB** — Database layer
+* **CORS** — Cross-origin request handling
+* **Dotenv** — Environment variable management
+
+### Deployment
+
+* **Vercel** — Application deployment and hosting
+* **GitHub** — Source control and project management
+
+---
+
+## Project Structure
+
+```text
+PortfolioWithMinions/
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── assets/
+│   │   ├── hooks/
+│   │   ├── store/
+│   │   └── ...
+│   ├── package.json
+│   └── vite.config.js
+│
+├── backend/
+│   ├── server.js
+│   ├── routes/
+│   ├── controllers/
+│   ├── models/
+│   ├── middleware/
+│   ├── package.json
+│   └── ...
+│
+├── .gitignore
+├── vercel.json
+└── README.md
+```
+
+> The exact contents of individual directories may evolve as the application continues to grow.
+
+---
+
+## Project Goals
+
+This project is more than a static portfolio. It serves as a practical implementation of modern frontend development principles, including:
+
+* Component-driven architecture
+* Responsive design
+* Interactive UI development
+* State management
+* API integration
+* Frontend/backend separation
+* Production deployment
+* Maintainable project organization
+
+It is also an evolving project that will continue to incorporate new technologies, interactions, and engineering practices as development progresses.
+
+---
+
+## Future Improvements
+
+Planned improvements may include:
+
+* Further performance optimization
+* Enhanced accessibility
+* Additional interactive experiences
+* Backend feature expansion
+* Improved API architecture
+* More advanced animations and transitions
+* Continued refinement of the mobile experience
+* Additional AI-powered functionality
+
+---
+
+## Author
+
+**Faisal Khabir**
+
+CSE Undergraduate | Aspiring Software Engineer
+
+This portfolio represents my ongoing journey from full-stack web development toward **AI-native product engineering**, combining software engineering, interface design, interaction, and intelligent systems.
+
+---
+
+## 📄 License
+
+This project is intended primarily as a personal portfolio and learning project. Please contact the author before reusing substantial portions of the design, content, or implementation.
 
 ```
-/
-├── frontend/       # Vite + React Application
-└── backend/        # Node.js + Express Application
 ```
-
-### 1. Frontend (`/frontend`)
-The frontend is built using **React** and bundled with **Vite** for blazing fast compilation and hot-module replacement.
-
-**Key Technologies:**
-- **React**: UI library.
-- **Vite**: Build tool and dev server.
-- **React Router**: For client-side routing (`react-router-dom`).
-- **Zustand**: For lightweight global state management.
-- **Axios**: For making HTTP requests to the backend API.
-- **Lucide React**: For SVG icons.
-
-**How to run locally:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### 2. Backend (`/backend`)
-The backend is a lightweight REST API built with **Node.js** and **Express**.
-
-**Key Technologies:**
-- **Express**: Web framework for Node.js.
-- **Mongoose**: Object Data Modeling (ODM) library for MongoDB. (Not strictly enforced if you prefer to swap out the DB).
-- **Cors**: Middleware to allow cross-origin requests from the React frontend.
-- **Dotenv**: For managing environment variables (like Database URIs).
-
-**How to run locally:**
-```bash
-cd backend
-npm install
-node server.js
-```
-
-## How they connect
-
-1. The frontend runs typically on `http://localhost:5173` during development.
-2. The backend runs on `http://localhost:5000` (or whatever port you define in `backend/server.js`).
-3. The frontend makes HTTP requests to the backend via `axios`. For example, fetching data from `http://localhost:5000/api/data`.
-
-## How to recreate this setup manually
-
-If you ever need to set this up from scratch again:
-
-1. **Create the project folder**: `mkdir my-app && cd my-app`
-2. **Setup Frontend**: 
-   - `npx create-vite@latest frontend --template react`
-   - `cd frontend && npm install`
-   - Install extras: `npm install react-router-dom axios zustand lucide-react`
-3. **Setup Backend**:
-   - `mkdir backend && cd backend`
-   - `npm init -y`
-   - Install dependencies: `npm install express cors dotenv mongoose`
-   - Create a `server.js` file for your entry point.
